@@ -1,0 +1,12 @@
+{
+  "name": "devconnector",
+  "version": "1.0.0",
+  "description": "Social network for developers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Benny Cheng",
+  "license": "ISC"
+}
