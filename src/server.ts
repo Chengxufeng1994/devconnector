@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import App from './app';
 /* Environment Variables */
 dotenv.config({
-  path: path.resolve(__dirname, '../', `.env.${process.env.NODE_ENV}`),
+  path: path.resolve(__dirname, '../', `.env`),
 });
 
 const HOST = process.env.HOST || 'localhost';
