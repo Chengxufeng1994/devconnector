@@ -2,6 +2,17 @@
   "defaultSeverity": "error",
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "jsRules": {},
-  "rules": {},
-  "rulesDirectory": []
+  "rules": {
+    "max-line-length": {
+      "options": [120]
+    },
+    "no-console": {
+      "severity": "warning",
+      "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
+    }
+  },
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": ["src/typings/**/*"]
+  }
 }
