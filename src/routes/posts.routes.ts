@@ -7,7 +7,7 @@ class PostsRoutes extends Route {
     this.setRoutes();
   }
 
-  protected setRoutes() {
+  protected setRoutes(): void {
     this.router.get('/posts', (request: Request, response: Response) => {
       response.send('Get Posts');
     });

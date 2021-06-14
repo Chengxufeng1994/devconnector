@@ -1,11 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
+interface IDecoded {
+  id: Record<string, unknown>;
+}
+
 const isAuthenticate = (
   request: Request,
   response: Response,
-  next: NextFunction
-) => {
+  next: NextFunction,
+): unknown => {
   const { authorization } = request.headers;
   if (!authorization) {
     return response.status(401).json({
@@ -24,11 +28,14 @@ const isAuthenticate = (
 
   // 驗證 Token
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+    ) as IDecoded;
     const { id: userId } = decoded;
 
     request.userId = userId;
-    next();
+    return next();
   } catch (err) {
     return response.status(403).json({
       success: false,

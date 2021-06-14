@@ -7,7 +7,7 @@ class ProfileRoutes extends Route {
     this.setRoutes();
   }
 
-  protected setRoutes() {
+  protected setRoutes(): void {
     this.router.get('/profile', (request: Request, response: Response) => {
       response.send('Get Profile');
     });

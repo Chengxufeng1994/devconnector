@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+
 const { Schema, model } = mongoose;
 
-interface User {
+interface IUser {
   name: string;
   email: string;
   password: string;
@@ -9,7 +10,7 @@ interface User {
   date: Date;
 }
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<IUser>({
   name: {
     type: String,
     require: true,
@@ -32,6 +33,6 @@ const userSchema = new Schema<User>({
   },
 });
 
-const User = model<User>('User', userSchema);
+const User = model<IUser>('User', userSchema);
 
 export default User;
