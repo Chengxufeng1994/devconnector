@@ -4,7 +4,7 @@ import App from './app';
 import router from './routes/router';
 /* Environment Variables */
 dotenv.config({
-  path: path.resolve(__dirname, '../', `.env`),
+  path: path.resolve(__dirname, '../', '.env'),
 });
 
 const HOST = process.env.HOST || 'localhost';

@@ -3,6 +3,7 @@ import InitController from '../controllers/initController';
 
 class InitRoutes {
   private router: Router;
+
   private initController: InitController = new InitController();
 
   constructor() {
@@ -10,7 +11,7 @@ class InitRoutes {
     this.setRoutes();
   }
 
-  public getRouter() {
+  public getRouter(): Router {
     return this.router;
   }
 

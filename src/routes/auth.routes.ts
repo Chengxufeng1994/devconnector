@@ -10,13 +10,13 @@ class AuthRoutes extends Route {
     this.setRoutes();
   }
 
-  protected setRoutes() {
+  protected setRoutes(): void {
     this.router.get(
       '/auth',
       isAuthenticate,
       async (request: Request, response: Response) => {
         try {
-          const userId = request.userId;
+          const { userId } = request;
           const user = await User.findById(userId).select('-password');
           return response.status(200).json({
             success: true,
@@ -28,7 +28,7 @@ class AuthRoutes extends Route {
             message: 'Server Error',
           });
         }
-      }
+      },
     );
   }
 }

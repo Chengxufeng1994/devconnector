@@ -10,7 +10,9 @@ import Route from './routes/routes.abstract';
 
 class App {
   public app: Application;
+
   public host: string;
+
   public port: number;
 
   constructor(host: string, port: number, router: Route[]) {
@@ -24,7 +26,9 @@ class App {
     this.routerSetup(router);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private connectToTheDatabase() {
+    // eslint-disable-next-line max-len
     const MONGO_URI = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}${process.env.MONGODB_PATH}`;
     mongoose
       .connect(MONGO_URI, {
@@ -33,11 +37,11 @@ class App {
         useUnifiedTopology: true,
       })
       .then(() => {
-        // tslint:disable-next-line:no-console
+        // eslint-disable-next-line no-console
         console.log('MongoDB connection success');
       })
       .catch((error) => {
-        // tslint:disable-next-line:no-console
+        // eslint-disable-next-line no-console
         console.error('MongoDB connection error: ', error.message);
         // Exit process with failure
         process.exit(1);
@@ -57,14 +61,14 @@ class App {
   }
 
   private routerSetup(router: Route[]) {
-    for (const route of router) {
+    router.forEach((route) => {
       this.app.use(route.getPrefix(), route.getRouter());
-    }
+    });
   }
 
-  public listen() {
+  public listen(): void {
     this.app.listen(this.port, () => {
-      // tslint:disable-next-line:no-console
+      // eslint-disable-next-line no-console
       console.log(`App listening on http://${this.host}:${this.port}`);
     });
   }
