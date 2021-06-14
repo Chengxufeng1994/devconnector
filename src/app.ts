@@ -30,9 +30,11 @@ class App {
         useUnifiedTopology: true,
       })
       .then(() => {
+        // tslint:disable-next-line:no-console
         console.log('MongoDB connection success');
       })
       .catch((error) => {
+        // tslint:disable-next-line:no-console
         console.error('MongoDB connection error: ', error.message);
         // Exit process with failure
         process.exit(1);
