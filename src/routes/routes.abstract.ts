@@ -1,12 +1,12 @@
 import { Router } from 'express';
 
-abstract class MainRoute {
-  private path = '/api';
+abstract class Route {
+  protected prefix: string = '/api';
   protected router = Router();
   protected abstract setRoutes(): void;
 
   public getPrefix() {
-    return this.path;
+    return this.prefix;
   }
 
   public getRouter() {
@@ -14,4 +14,4 @@ abstract class MainRoute {
   }
 }
 
-export default MainRoute;
+export default Route;

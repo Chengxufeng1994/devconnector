@@ -5,14 +5,15 @@ import helmet from 'helmet';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 
-import InitRoutes from './routes/initRoutes';
+import InitRoutes from './routes/init.routes';
+import Route from './routes/routes.abstract';
 
 class App {
   public app: Application;
   public host: string;
   public port: number;
 
-  constructor(host: string, port: number) {
+  constructor(host: string, port: number, router: Route[]) {
     this.app = express();
     this.host = host;
     this.port = port;
@@ -20,6 +21,7 @@ class App {
     this.connectToTheDatabase();
     this.initializeMiddleware();
     this.initializeRoutes();
+    this.routerSetup(router);
   }
 
   private connectToTheDatabase() {
@@ -51,6 +53,12 @@ class App {
 
   private initializeRoutes() {
     this.app.use('/', new InitRoutes().getRouter());
+  }
+
+  private routerSetup(router: Route[]) {
+    for (const route of router) {
+      this.app.use(route.getPrefix(), route.getRouter());
+    }
   }
 
   public listen() {
