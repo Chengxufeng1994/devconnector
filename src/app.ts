@@ -28,6 +28,7 @@ class App {
     const MONGO_URI = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}${process.env.MONGODB_PATH}`;
     mongoose
       .connect(MONGO_URI, {
+        useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
