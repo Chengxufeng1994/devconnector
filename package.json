@@ -4,10 +4,15 @@
   "description": "Social network for developers",
   "main": "server.ts",
   "scripts": {
-    "clean": "rimraf dist/*",
+    "clean": "rimraf ./dist/*",
     "build": "tsc --project ./",
     "start": "npm run build && NODE_ENV=production node ./dist/server.js",
     "server": "NODE_ENV=development nodemon src/server.ts",
+    "_comment_": "Use pm2 tutorial https://medium.com/@ahmedkhalilbejaoui/build-a-rest-api-using-node-with-typescript-pm2-with-load-balancer-webpack-for-development-and-87176653d84",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 delete ecosystem.config.js",
+    "pm2:logs": "pm2 logs --lines 2000",
+    "pm2:monitor": "pm2 monit",
     "lint": "eslint -c .eslintrc.js --fix --ext .js,.jsx,.ts,.tsx 'src/**/*'",
     "prettier:check": "prettier --list-different \"src/**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"src/**/*.{ts,tsx}\"",
@@ -28,7 +33,8 @@
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pm2": "^5.1.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
