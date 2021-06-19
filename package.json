@@ -5,8 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "clean": "rimraf ./dist/*",
-    "_comment_": "commitlint",
-    "commit": "commit",
+    "_comment_": "use commitizen",
+    "commit": "git-cz",
     "build": "tsc --project ./",
     "start": "npm run build && NODE_ENV=production node ./dist/server.js",
     "server": "NODE_ENV=development nodemon src/server.ts",
@@ -40,8 +40,6 @@
     "pm2": "^5.1.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
     "@commitlint/prompt-cli": "^12.1.4",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.10",
@@ -54,6 +52,7 @@
     "@types/node": "^15.12.2",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
+    "commitizen": "^4.2.4",
     "concurrently": "^6.2.0",
     "eslint": "^7.28.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
@@ -71,5 +70,10 @@
       "npm run prettier:write",
       "npm run lint"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
