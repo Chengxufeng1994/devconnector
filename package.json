@@ -5,6 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "clean": "rimraf ./dist/*",
+    "_comment_": "commitlint",
+    "commit": "commit",
     "build": "tsc --project ./",
     "start": "npm run build && NODE_ENV=production node ./dist/server.js",
     "server": "NODE_ENV=development nodemon src/server.ts",
@@ -17,6 +19,7 @@
     "prettier:check": "prettier --list-different \"src/**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"src/**/*.{ts,tsx}\"",
     "prepare": "husky install",
+    "postinstall": "$(npm bin)/pm2 install typescript",
     "ncu": "ncu"
   },
   "keywords": [],
@@ -37,6 +40,9 @@
     "pm2": "^5.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@commitlint/prompt-cli": "^12.1.4",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.10",
     "@types/dotenv": "^8.2.0",
