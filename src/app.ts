@@ -8,6 +8,8 @@ import morgan from 'morgan';
 import InitRoutes from './routes/init.routes';
 import Route from './routes/routes.abstract';
 
+import errorHandler from './errorHandler';
+
 class App {
   public app: Application;
 
@@ -24,6 +26,7 @@ class App {
     this.initializeMiddleware();
     this.initializeRoutes();
     this.routerSetup(router);
+    this.errorHandlerSetup();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -64,6 +67,10 @@ class App {
     router.forEach((route) => {
       this.app.use(route.getPrefix(), route.getRouter());
     });
+  }
+
+  private errorHandlerSetup() {
+    this.app.use(errorHandler);
   }
 
   public listen(): void {

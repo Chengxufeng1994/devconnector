@@ -17,7 +17,10 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
+    'comma-dangle': [2, 'always-multiline'],
+    'class-methods-use-this': [0],
     'max-len': ['error', { code: 120 }],
-    'class-methods-use-this': [2],
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
   },
 };
