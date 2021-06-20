@@ -250,7 +250,7 @@ class ProfileController {
     request: Request,
     response: Response,
     next: NextFunction,
-  ) {
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
     const { userId, params } = request;
     const { experienceId } = params;
 
@@ -270,6 +270,94 @@ class ProfileController {
         .indexOf(experienceId);
 
       profile.experience.splice(removeIndex, 1);
+
+      await profile.save();
+
+      return response.status(200).json({
+        success: true,
+        profile,
+        message: 'Delete experience from profile success',
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  public async addEducationToProfile(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId, body } = request;
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({
+        success: false,
+        errors: errors.array(),
+      });
+    }
+
+    const {
+      school, degree, fieldofstudy, from, to, current, description,
+    } = body;
+    const education = {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      const profile = await Profile.findOne({ user: userId });
+
+      if (!profile) {
+        return response.status(400).send({
+          success: false,
+          message: 'There is no profile for this user',
+        });
+      }
+
+      profile.education.unshift(education);
+
+      await profile.save();
+
+      return response.status(200).json({
+        success: true,
+        profile,
+        message: 'Add experience to profile success',
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  public async deleteEducationFromProfile(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId, params } = request;
+    const { educationId } = params;
+
+    try {
+      const profile = await Profile.findOne({ user: userId });
+
+      if (!profile) {
+        return response.status(400).send({
+          success: false,
+          message: 'There is no profile for this user',
+        });
+      }
+
+      const removeIndex = profile.education
+        // eslint-disable-next-line no-underscore-dangle
+        .map((item) => item._id)
+        .indexOf(educationId);
+
+      profile.education.splice(removeIndex, 1);
 
       await profile.save();
 

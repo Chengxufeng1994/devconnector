@@ -73,6 +73,33 @@ class ProfileRoutes extends Route {
       this.profileController.deleteExperienceFromProfile,
     );
     /**
+     * @route PUT api/profile/education
+     * @description Add profile education
+     * @access Private
+     */
+    this.router.put(
+      '/profile/education',
+      isAuthenticate,
+      check('degree', 'Degree is required').not().isEmpty(),
+      check('school', 'School is required').not().isEmpty(),
+      check('fieldofstudy', 'Field of Study is required').not().isEmpty(),
+      check('from', 'From date is required and needs to be from the past')
+        .not()
+        .isEmpty()
+        .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
+      this.profileController.addEducationToProfile,
+    );
+    /**
+     * @route Delete api/profile/education
+     * @description Delete profile education
+     * @access Private
+     */
+    this.router.delete(
+      '/profile/education/:educationId',
+      isAuthenticate,
+      this.profileController.deleteEducationFromProfile,
+    );
+    /**
      * @route Get api/profile/all
      * @description Get All Profile
      * @access Private
