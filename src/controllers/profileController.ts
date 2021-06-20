@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import fetch from 'node-fetch';
 
 import Profile, { TProfileFields, TSocialFields } from '../models/Profile';
 import User from '../models/User';
@@ -367,6 +368,40 @@ class ProfileController {
         message: 'Delete experience from profile success',
       });
     } catch (error) {
+      return next(error);
+    }
+  }
+
+  public async getGithubUserRepos(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { params } = request;
+    const { username } = params;
+    try {
+      // eslint-disable-next-line max-len
+      const url = `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`;
+
+      const res = await fetch(url, {
+        method: 'GET',
+      });
+      if (res.status !== 200) {
+        return response.status(404).json({
+          success: false,
+          message: 'No Github profile found',
+        });
+      }
+      const result = await res.json();
+
+      return response.status(200).json({
+        success: true,
+        message: 'Get Github profile success',
+        result,
+      });
+    } catch (error) {
+      // console.log(error.message);
+      // console.log(error.stack);
       return next(error);
     }
   }

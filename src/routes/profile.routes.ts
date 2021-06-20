@@ -115,6 +115,15 @@ class ProfileRoutes extends Route {
       isAuthenticate,
       this.profileController.deleteProfile,
     );
+    /**
+     * @route Get api/profile/github/:username
+     * @description Get user repos from Github
+     * @access Public
+     */
+    this.router.get(
+      '/profile/github/:username',
+      this.profileController.getGithubUserRepos,
+    );
   }
 }
 
