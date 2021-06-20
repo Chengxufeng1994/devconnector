@@ -245,6 +245,43 @@ class ProfileController {
       return next(error);
     }
   }
+
+  public async deleteExperienceFromProfile(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ) {
+    const { userId, params } = request;
+    const { experienceId } = params;
+
+    try {
+      const profile = await Profile.findOne({ user: userId });
+
+      if (!profile) {
+        return response.status(400).send({
+          success: false,
+          message: 'There is no profile for this user',
+        });
+      }
+
+      const removeIndex = profile.experience
+        // eslint-disable-next-line no-underscore-dangle
+        .map((item) => item._id)
+        .indexOf(experienceId);
+
+      profile.experience.splice(removeIndex, 1);
+
+      await profile.save();
+
+      return response.status(200).json({
+        success: true,
+        profile,
+        message: 'Delete experience from profile success',
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export default ProfileController;

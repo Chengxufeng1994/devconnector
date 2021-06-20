@@ -47,7 +47,7 @@ class ProfileRoutes extends Route {
       this.profileController.postProfile,
     );
     /**
-     * @route PYT api/profile/experience
+     * @route PUT api/profile/experience
      * @description Add profile experience
      * @access Private
      */
@@ -61,6 +61,16 @@ class ProfileRoutes extends Route {
         .isEmpty()
         .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
       this.profileController.addExperienceToProfile,
+    );
+    /**
+     * @route Delete api/profile/experience
+     * @description Delete profile experience
+     * @access Private
+     */
+    this.router.delete(
+      '/profile/experience/:experienceId',
+      isAuthenticate,
+      this.profileController.deleteExperienceFromProfile,
     );
     /**
      * @route Get api/profile/all

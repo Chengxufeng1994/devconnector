@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export interface IExperience {
+  [key: string]: any;
   title: string;
   company: string;
   location: string;
