@@ -24,6 +24,15 @@ class ProfileRoutes extends Route {
       this.profileController.getProfile,
     );
     /**
+     * @route GET api/profile/user/:userId
+     * @description Get profile by userId
+     * @access Private
+     */
+    this.router.get(
+      '/profile/user/:userId',
+      this.profileController.getProfileByUserId,
+    );
+    /**
      * @route POST api/profile
      * @description Creat or update user profile
      * @access Private
@@ -37,6 +46,12 @@ class ProfileRoutes extends Route {
       ],
       this.profileController.postProfile,
     );
+    /**
+     * @route Get api/profile/all
+     * @description Get All Profile
+     * @access Private
+     */
+    this.router.get('/profile/all', this.profileController.getAllProfile);
   }
 }
 

@@ -8,7 +8,7 @@ class ProfileController {
     request: Request,
     response: Response,
     next: NextFunction,
-  ) {
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
     try {
       const profile = await Profile.findOne({ user: request.userId }).populate(
         'user',
@@ -32,11 +32,50 @@ class ProfileController {
     }
   }
 
+  public async getProfileByUserId(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId } = request.params;
+
+    try {
+      const profile = await Profile.findOne({ user: userId }).populate('user', [
+        'name',
+        'avatar',
+      ]);
+
+      if (!profile) {
+        return response.status(400).send({
+          success: false,
+          message: 'There is no profile for this user',
+        });
+      }
+
+      return response.status(200).send({
+        success: true,
+        message: 'Get profile by userId Success',
+        profile,
+      });
+    } catch (error) {
+      // console.log(error.message);
+      // console.log(error.stack);
+      if (error.kind === 'ObjectId') {
+        return response.status(400).send({
+          success: false,
+          message: 'There is no profile for this user',
+        });
+      }
+
+      return next(error);
+    }
+  }
+
   public async postProfile(
     request: Request,
     response: Response,
     next: NextFunction,
-  ) {
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
       return response.status(400).json({
@@ -104,12 +143,31 @@ class ProfileController {
         await profile.save();
       }
 
-      console.log('[profile]: ', profile);
-
       return response.status(200).json({
         success: true,
         profile,
         message: `${hasProfile ? 'Update' : 'Create'} profile success`,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  public async getAllProfile(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    try {
+      const profiles = await Profile.find().populate('user', [
+        'name',
+        'avatar',
+      ]);
+
+      return response.status(200).json({
+        success: true,
+        message: 'Get all profiles success',
+        profiles,
       });
     } catch (error) {
       return next(error);
