@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
 import Profile, { TProfileFields, TSocialFields } from '../models/Profile';
+import User from '../models/User';
 
 class ProfileController {
   public async getProfile(
@@ -126,7 +127,6 @@ class ProfileController {
     let profile = null;
     let hasProfile = false;
     try {
-      console.log(userId);
       profile = await Profile.findOne({ user: userId });
 
       if (profile) {
@@ -168,6 +168,27 @@ class ProfileController {
         success: true,
         message: 'Get all profiles success',
         profiles,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  public async deleteProfile(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId } = request;
+
+    try {
+      await Profile.findOneAndRemove({ user: userId });
+
+      await User.findByIdAndRemove(userId);
+
+      return response.status(200).json({
+        success: true,
+        message: 'Delete profiles success',
       });
     } catch (error) {
       return next(error);

@@ -52,6 +52,16 @@ class ProfileRoutes extends Route {
      * @access Private
      */
     this.router.get('/profile/all', this.profileController.getAllProfile);
+    /**
+     * @route Delete api/profile
+     * @description Delete Profile
+     * @access Private
+     */
+    this.router.delete(
+      '/profile',
+      isAuthenticate,
+      this.profileController.deleteProfile,
+    );
   }
 }
 
