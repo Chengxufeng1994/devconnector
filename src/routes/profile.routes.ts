@@ -47,6 +47,22 @@ class ProfileRoutes extends Route {
       this.profileController.postProfile,
     );
     /**
+     * @route PYT api/profile/experience
+     * @description Add profile experience
+     * @access Private
+     */
+    this.router.put(
+      '/profile/experience',
+      isAuthenticate,
+      check('title', 'Title is required').not().isEmpty(),
+      check('company', 'Company is required').not().isEmpty(),
+      check('from', 'From date is required and needs to be from the past')
+        .not()
+        .isEmpty()
+        .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
+      this.profileController.addExperienceToProfile,
+    );
+    /**
      * @route Get api/profile/all
      * @description Get All Profile
      * @access Private

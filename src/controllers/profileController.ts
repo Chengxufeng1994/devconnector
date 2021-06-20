@@ -194,6 +194,57 @@ class ProfileController {
       return next(error);
     }
   }
+
+  public async addExperienceToProfile(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId, body } = request;
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({
+        success: false,
+        errors: errors.array(),
+      });
+    }
+
+    const {
+      title, company, location, from, to, current, description,
+    } = body;
+    const experience = {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      const profile = await Profile.findOne({ user: userId });
+
+      if (!profile) {
+        return response.status(400).send({
+          success: false,
+          message: 'There is no profile for this user',
+        });
+      }
+
+      profile.experience.unshift(experience);
+
+      await profile.save();
+
+      return response.status(200).json({
+        success: true,
+        profile,
+        message: 'Add experience to profile success',
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export default ProfileController;

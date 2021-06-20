@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import ExperienceSchema, { IExperience } from './Experience';
 
 const { Schema, model } = mongoose;
 
@@ -19,6 +20,7 @@ export interface IProfile {
   skills: string[];
   bio: string;
   githubusername: string;
+  experience: IExperience[];
   social: TSocialFields;
 }
 
@@ -50,35 +52,7 @@ const profileSchema = new Schema<IProfile>({
   githubusername: {
     type: String,
   },
-  experience: [
-    {
-      title: {
-        type: String,
-        required: true,
-      },
-      company: {
-        type: String,
-        required: true,
-      },
-      location: {
-        type: String,
-      },
-      from: {
-        type: Date,
-        required: true,
-      },
-      to: {
-        type: Date,
-      },
-      current: {
-        type: Boolean,
-        default: false,
-      },
-      description: {
-        type: String,
-      },
-    },
-  ],
+  experience: [ExperienceSchema],
   education: [
     {
       school: {
