@@ -1,10 +1,25 @@
 import mongoose from 'mongoose';
-import { IUser } from './User';
 
 const { Schema, model } = mongoose;
 
-interface IProfile {
-  user: IUser;
+export type TSocialFields = {
+  [key: string]: string;
+};
+
+export type TProfileFields = {
+  [key: string]: string | number | string[] | TSocialFields;
+};
+
+export interface IProfile {
+  user: string;
+  company: string;
+  website: string;
+  location: string;
+  status: string;
+  skills: string[];
+  bio: string;
+  githubusername: string;
+  social: TSocialFields;
 }
 
 const profileSchema = new Schema<IProfile>({
@@ -95,19 +110,19 @@ const profileSchema = new Schema<IProfile>({
     },
   ],
   social: {
-    youtube: {
-      type: String,
-    },
-    twitter: {
-      type: String,
-    },
     facebook: {
+      type: String,
+    },
+    instagram: {
       type: String,
     },
     linkedin: {
       type: String,
     },
-    instagram: {
+    twitter: {
+      type: String,
+    },
+    youtube: {
       type: String,
     },
   },
