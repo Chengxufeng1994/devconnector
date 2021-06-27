@@ -7,7 +7,10 @@ import User from '../models/User';
 
 class AuthController {
   // eslint-disable-next-line class-methods-use-this
-  public async login(request: Request, response: Response) {
+  public async login(
+    request: Request,
+    response: Response,
+  ): Promise<Response<unknown, Record<string, unknown>>> {
     const errors = validationResult(request);
 
     if (!errors.isEmpty()) {

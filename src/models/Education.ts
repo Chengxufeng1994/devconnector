@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export interface IEducation {
-  [key: string]: any;
+  [key: string]: unknown;
   school: string;
   degree: string;
   fieldofstudy: string;
