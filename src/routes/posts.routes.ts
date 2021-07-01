@@ -58,6 +58,26 @@ class PostsRoutes extends Route {
       isAuthenticate,
       this.postController.deletePostById,
     );
+    /**
+     * @route PUT api/posts/like/:postId
+     * @description like or unlike post by id
+     * @access Private
+     */
+    this.router.put(
+      '/posts/like/:postId',
+      isAuthenticate,
+      this.postController.likePostById,
+    );
+    /**
+     * @route PUT api/posts/like/:postId
+     * @description like or unlike post by id
+     * @access Private
+     */
+    this.router.put(
+      '/posts/unlike/:postId',
+      isAuthenticate,
+      this.postController.unlikePostById,
+    );
   }
 }
 

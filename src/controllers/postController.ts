@@ -146,6 +146,85 @@ class PostController {
       next(err);
     }
   }
+
+  public async likePostById(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId, params } = request;
+    const { postId } = params;
+
+    try {
+      const post = await Post.findById(postId);
+      if (!post) {
+        const error: any = new Error('Post not found');
+        error.code = 404;
+        throw error;
+      }
+
+      const { likes } = post;
+      // eslint-disable-next-line no-underscore-dangle
+      const isUserBeenLikes = likes.filter((like) => like.user.toString() === userId).length > 0;
+      if (isUserBeenLikes) {
+        const error: any = new Error('Post already liked');
+        error.code = 404;
+        throw error;
+      }
+
+      post.likes.unshift({ user: userId as string });
+      await post.save();
+
+      return response.status(200).json({
+        success: true,
+        message: 'Like Post success',
+        likes: post.likes,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async unlikePostById(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId, params } = request;
+    const { postId } = params;
+
+    try {
+      const post = await Post.findById(postId);
+      if (!post) {
+        const error: any = new Error('Post not found');
+        error.code = 404;
+        throw error;
+      }
+
+      const { likes } = post;
+      // eslint-disable-next-line no-underscore-dangle
+      const isUserBeenLikes = likes.filter((like) => like.user.toString() === userId).length === 0;
+      if (isUserBeenLikes) {
+        const error: any = new Error('Post has not yet been liked');
+        error.code = 404;
+        throw error;
+      }
+
+      const removeIndex = post.likes.findIndex(
+        (like) => like.user.toString() === userId,
+      );
+      post.likes.splice(removeIndex, 1);
+      await post.save();
+
+      return response.status(200).json({
+        success: true,
+        message: 'Unlike Post success',
+        likes: post.likes,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default PostController;

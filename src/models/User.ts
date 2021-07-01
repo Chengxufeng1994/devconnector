@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 export interface IUser {
+  _id: SVGStringList;
   name: string;
   email: string;
   password: string;

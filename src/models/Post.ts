@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-interface ILikes {
+export interface ILikes {
   user: string;
 }
 
