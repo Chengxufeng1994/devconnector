@@ -27,6 +27,37 @@ class PostsRoutes extends Route {
       [isAuthenticate, check('text', 'Text is required').not().isEmpty()],
       this.postController.createPost,
     );
+
+    /**
+     * @route GET api/posts
+     * @description Get all post
+     * @access Private
+     */
+    this.router.get(
+      '/posts/all',
+      isAuthenticate,
+      this.postController.getAllPost,
+    );
+    /**
+     * @route GET api/posts/:postId
+     * @description Get post by id
+     * @access Private
+     */
+    this.router.get(
+      '/posts/:postId',
+      isAuthenticate,
+      this.postController.getPostById,
+    );
+    /**
+     * @route DELETE api/posts/:postId
+     * @description Delete post by id
+     * @access Private
+     */
+    this.router.delete(
+      '/posts/:postId',
+      isAuthenticate,
+      this.postController.deletePostById,
+    );
   }
 }
 

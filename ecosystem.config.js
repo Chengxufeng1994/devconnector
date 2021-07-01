@@ -5,13 +5,14 @@ module.exports = {
       script: 'src/server.ts',
       watch: true,
       instances: 1,
-      exec_mode: 'cluster',
+      exec_mode: 'fork',
       env: {
         NODE_ENV: 'development',
       },
       env_production: {
         NODE_ENV: 'production',
       },
+      ignore_watch: ['node_modules'],
       //combine multiple err/out logs in one file for each
       combine_logs: true,
       //calls combine logs
@@ -22,6 +23,7 @@ module.exports = {
       out_file: 'logs/out.log',
       // use time in logs
       time: true,
+      log_date_format: 'YYYY-MM-DD HH:mm Z',
     },
   ],
 };

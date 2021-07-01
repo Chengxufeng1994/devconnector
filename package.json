@@ -10,7 +10,7 @@
     "build": "tsc --project ./",
     "start": "npm run build && NODE_ENV=production node ./dist/server.js",
     "server": "NODE_ENV=development nodemon src/server.ts",
-    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:start": "pm2 start ecosystem.config.js --env development",
     "pm2:stop": "pm2 delete ecosystem.config.js",
     "pm2:logs": "pm2 logs --lines 2000",
     "pm2:monitor": "pm2 monit",

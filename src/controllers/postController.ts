@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
@@ -5,7 +6,6 @@ import User from '../models/User';
 import Post from '../models/Post';
 
 class PostController {
-  // eslint-disable-next-line consistent-return
   public async createPost(
     request: Request,
     response: Response,
@@ -47,6 +47,103 @@ class PostController {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  public async getAllPost(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    try {
+      const posts = await Post.find().sort({ date: -1 });
+
+      return response.status(200).json({
+        success: true,
+        message: 'Get All Posts success',
+        posts,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getPostById(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { postId } = request.params;
+    try {
+      const post = await Post.findById(postId);
+
+      if (!post) {
+        return response.status(404).json({
+          success: false,
+          message: 'Post not found',
+        });
+      }
+
+      return response.status(200).json({
+        success: true,
+        message: 'Get Post by id success',
+        post,
+      });
+    } catch (err) {
+      const { kind } = err;
+      if (kind === 'ObjectId') {
+        const error: any = new Error('Post not found');
+        error.code = 404;
+
+        next(error);
+      }
+
+      next(err);
+    }
+  }
+
+  public async deletePostById(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId } = request;
+    const { postId } = request.params;
+    try {
+      const post = await Post.findById(postId);
+      if (!post) {
+        const error: any = new Error('Post not found');
+        error.code = 404;
+        throw error;
+      }
+
+      if (post.user.toString() !== userId) {
+        const error: any = new Error('User not unauthorized');
+        error.code = 401;
+        throw error;
+      }
+
+      const result = await Post.deleteOne({ _id: postId });
+      if (result.ok !== 1) {
+        const error: any = new Error('Delete Post Fail');
+        error.code = 404;
+        throw error;
+      }
+
+      return response.status(200).json({
+        success: true,
+        message: 'Delete Post by id success',
+      });
+    } catch (err) {
+      const { kind } = err;
+      if (kind === 'ObjectId') {
+        const error: any = new Error('Post not found');
+        error.code = 404;
+
+        next(error);
+      }
+
+      next(err);
     }
   }
 }
