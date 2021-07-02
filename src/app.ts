@@ -9,6 +9,7 @@ import InitRoutes from './routes/init.routes';
 import Route from './routes/routes.abstract';
 
 import errorHandler from './errorHandler';
+import { logger } from './utils';
 
 class App {
   public app: Application;
@@ -40,12 +41,10 @@ class App {
         useUnifiedTopology: true,
       })
       .then(() => {
-        // eslint-disable-next-line no-console
-        console.log('MongoDB connection success');
+        logger.info('MongoDB connection success');
       })
       .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error('MongoDB connection error: ', error.message);
+        logger.error(`MongoDB connection error: ${error.message}`);
         // Exit process with failure
         process.exit(1);
       });
@@ -75,8 +74,7 @@ class App {
 
   public listen(): void {
     this.app.listen(this.port, () => {
-      // eslint-disable-next-line no-console
-      console.log(`App listening on http://${this.host}:${this.port}`);
+      logger.info(`App listening on http://${this.host}:${this.port}`);
     });
   }
 }
