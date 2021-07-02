@@ -4,8 +4,12 @@ module.exports = {
       name: 'dev-connector-api',
       script: 'src/server.ts',
       watch: true,
+      wait_ready: true,
+      shutdown_with_message: true,
+      listen_timeout: 3000,
       instances: 1,
       exec_mode: 'fork',
+      cron_restart: '0 0 * * *',
       env: {
         NODE_ENV: 'development',
       },

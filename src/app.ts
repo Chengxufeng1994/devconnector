@@ -9,7 +9,6 @@ import InitRoutes from './routes/init.routes';
 import Route from './routes/routes.abstract';
 
 import errorHandler from './errorHandler';
-import { logger } from './utils';
 
 class App {
   public app: Application;
@@ -41,10 +40,12 @@ class App {
         useUnifiedTopology: true,
       })
       .then(() => {
-        logger.info('MongoDB connection success');
+        // eslint-disable-next-line no-console
+        console.log('MongoDB connection success');
       })
       .catch((error) => {
-        logger.error(`MongoDB connection error: ${error.message}`);
+        // eslint-disable-next-line no-console
+        console.error(`MongoDB connection error: ${error.message}`);
         // Exit process with failure
         process.exit(1);
       });
@@ -74,9 +75,26 @@ class App {
 
   public listen(): void {
     this.app.listen(this.port, () => {
-      logger.info(`App listening on http://${this.host}:${this.port}`);
+      // eslint-disable-next-line no-console
+      console.log(`App listening on http://${this.host}:${this.port}`);
+      // Here we send the ready signal to PM2
+      if (process.send) {
+        // eslint-disable-next-line no-console
+        console.log('[PM2]: Send ready to PM2');
+        process.send('ready');
+      }
     });
   }
 }
+
+process.on('message', (msg) => {
+  if (msg === 'shutdown') {
+    console.log('Closing all connections...');
+    setTimeout(() => {
+      console.log('Finished closing connections');
+      process.exit(0);
+    }, 1500);
+  }
+});
 
 export default App;
