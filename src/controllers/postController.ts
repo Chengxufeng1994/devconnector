@@ -167,7 +167,8 @@ class PostController {
 
       const { likes } = post;
       // eslint-disable-next-line no-underscore-dangle
-      const isUserBeenLikes = likes.filter((like) => like.user.toString() === userId).length > 0;
+      const isUserBeenLikes =
+        likes.filter((like) => like.user.toString() === userId).length > 0;
       if (isUserBeenLikes) {
         const error: any = new Error('Post already liked');
         error.code = 404;
@@ -205,7 +206,8 @@ class PostController {
 
       const { likes } = post;
       // eslint-disable-next-line no-underscore-dangle
-      const isUserBeenLikes = likes.filter((like) => like.user.toString() === userId).length === 0;
+      const isUserBeenLikes =
+        likes.filter((like) => like.user.toString() === userId).length === 0;
       if (isUserBeenLikes) {
         const error: any = new Error('Post has not yet been liked');
         error.code = 404;

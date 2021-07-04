@@ -3,7 +3,8 @@ import { format, transports } from 'winston';
 const { combine, timestamp, printf /* prettyPrint */ } = format;
 
 const myFormat = printf(
-  ({ level, message, timestamp: formatTimestamp }) => `${level}: [${formatTimestamp}] ${message}`,
+  ({ level, message, timestamp: formatTimestamp }) =>
+    `${level}: [${formatTimestamp}] ${message}`,
 );
 
 const logConfiguration = {

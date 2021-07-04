@@ -18,8 +18,7 @@ class UserRoutes extends Route {
      */
     this.router.post(
       '/users',
-      check('name').not().isEmpty().trim()
-        .withMessage('Name is required.'),
+      check('name').not().isEmpty().trim().withMessage('Name is required.'),
       check('email', 'Please include a valid email.')
         .isEmail()
         .normalizeEmail(),

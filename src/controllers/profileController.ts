@@ -210,9 +210,7 @@ class ProfileController {
       });
     }
 
-    const {
-      title, company, location, from, to, current, description,
-    } = body;
+    const { title, company, location, from, to, current, description } = body;
     const experience = {
       title,
       company,
@@ -298,9 +296,8 @@ class ProfileController {
       });
     }
 
-    const {
-      school, degree, fieldofstudy, from, to, current, description,
-    } = body;
+    const { school, degree, fieldofstudy, from, to, current, description } =
+      body;
     const education = {
       school,
       degree,
