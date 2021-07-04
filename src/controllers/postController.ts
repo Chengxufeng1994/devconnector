@@ -1,9 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable consistent-return */
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
 import User from '../models/User';
 import Post from '../models/Post';
+import { HttpRequestError } from '../utils';
 
 class PostController {
   public async createPost(
@@ -223,6 +225,120 @@ class PostController {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  public async createCommentToPost(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({
+        success: false,
+        errors: errors.array(),
+      });
+    }
+    const { userId, params, body } = request;
+    const { postId } = params;
+
+    try {
+      const user = await User.findById(userId).select('-password');
+      const post = await Post.findById(postId);
+      if (!user) {
+        const error = new HttpRequestError('User not found', 404);
+        throw error;
+      }
+
+      if (!post) {
+        const error = new HttpRequestError('Post not found', 404);
+        throw error;
+      }
+
+      const { text } = body;
+      const { name, avatar } = user;
+      const { comments } = post;
+
+      const newComment = {
+        user: userId as string,
+        text,
+        name,
+        avatar,
+      };
+      const updateComments = [...comments];
+      updateComments.unshift(newComment);
+      post.comments = updateComments;
+
+      await post.save();
+
+      return response.status(200).json({
+        success: true,
+        message: 'Comment a Post success',
+        post,
+      });
+    } catch (err) {
+      const { kind } = err;
+      if (kind === 'ObjectId') {
+        const error = new HttpRequestError('Post not found', 404);
+        next(error);
+      }
+
+      next(err);
+    }
+  }
+
+  public async removeCommentFromPost(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
+    const { userId, params } = request;
+    const { postId, commentId } = params;
+
+    try {
+      const post = await Post.findById(postId);
+      if (!post) {
+        const error = new HttpRequestError('Post not found', 404);
+        throw error;
+      }
+
+      const { comments } = post;
+      const updateComments = [...comments];
+      const removeIndex = updateComments.findIndex(
+        (c) => c._id.toString() === commentId,
+      );
+      if (removeIndex === -1) {
+        return response.status(404).json({
+          success: false,
+          message: 'Comment not not exist',
+        });
+      }
+
+      const comment = updateComments[removeIndex];
+      if (comment.user.toString() !== userId) {
+        return response.status(404).json({
+          success: false,
+          message: 'User no unauthorized',
+        });
+      }
+
+      updateComments.splice(removeIndex, 1);
+      post.comments = updateComments;
+      await post.save();
+
+      return response.status(200).json({
+        success: true,
+        message: 'Delete comment success',
+      });
+    } catch (err) {
+      const { kind } = err;
+      if (kind === 'ObjectId') {
+        const error = new HttpRequestError('Post not found', 404);
+        next(error);
+      }
+
+      next(err);
     }
   }
 }

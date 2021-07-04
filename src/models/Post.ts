@@ -6,12 +6,12 @@ export interface ILikes {
   user: string;
 }
 
-interface IComments {
+export interface IComments {
+  [key: string]: string;
   user: string;
-  test: string;
+  text: string;
   name: string;
   avatar: string;
-  date: Date;
 }
 
 export interface IPost {

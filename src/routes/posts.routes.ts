@@ -78,6 +78,26 @@ class PostsRoutes extends Route {
       isAuthenticate,
       this.postController.unlikePostById,
     );
+    /**
+     * @route POST api/posts/comment/:postId
+     * @description Comment on a post
+     * @access Private
+     */
+    this.router.post(
+      '/posts/comment/:postId',
+      [isAuthenticate, check('text', 'Text is required').not().isEmpty()],
+      this.postController.createCommentToPost,
+    );
+    /**
+     * @route DELETE api/posts/comment/:postId/:commentId
+     * @description Delete comment
+     * @access Private
+     */
+    this.router.delete(
+      '/posts/comment/:postId/:commentId',
+      isAuthenticate,
+      this.postController.removeCommentFromPost,
+    );
   }
 }
 

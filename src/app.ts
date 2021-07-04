@@ -89,8 +89,10 @@ class App {
 
 process.on('message', (msg) => {
   if (msg === 'shutdown') {
+    // eslint-disable-next-line no-console
     console.log('Closing all connections...');
     setTimeout(() => {
+      // eslint-disable-next-line no-console
       console.log('Finished closing connections');
       process.exit(0);
     }, 1500);

@@ -1,5 +1,6 @@
 import logger from './logger';
+import HttpRequestError from './HttpRequestError';
 
-export { logger };
+export { HttpRequestError, logger };
 
-export default { logger };
+export default { HttpRequestError, logger };
