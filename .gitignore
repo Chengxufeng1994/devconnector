@@ -12,6 +12,8 @@
 
 # misc
 .DS_Store
+
+# local env files
 .env
 .env.development
 .env.production
