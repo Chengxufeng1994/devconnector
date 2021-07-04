@@ -17,9 +17,9 @@
     "pm2:reload": "pm2 reload ecosystem.config.js",
     "pm2:logs": "pm2 logs --lines 2000",
     "pm2:monitor": "pm2 monit",
-    "lint": "eslint -c .eslintrc.js --fix --ext .js,.jsx,.ts,.tsx 'src/**/*' 'client/pages/**/*'",
-    "prettier:check": "prettier --list-different \"src/**/*.{js,jsx,ts,tsx}\" \"client/pages/**/*.{js,jsx,ts,tsx}\"",
-    "prettier:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\" \"client/pages/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "eslint -c .eslintrc.js --fix --ext .js,.jsx,.ts,.tsx 'src/**/*' 'client/pages/**/*' 'client/components/**/*'",
+    "prettier:check": "prettier --list-different \"src/**/*.{js,jsx,ts,tsx}\" \"client/pages/**/*.{js,jsx,ts,tsx}\" \"client/components/**/*.{js,jsx,ts,tsx}\"",
+    "prettier:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\" \"client/pages/**/*.{js,jsx,ts,tsx}\" \"client/components/**/*.{js,jsx,ts,tsx}\"",
     "prepare": "husky install",
     "postinstall": "$(npm bin)/pm2 install typescript",
     "ncu": "ncu"
