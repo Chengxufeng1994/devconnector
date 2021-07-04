@@ -9,7 +9,7 @@
     "commit": "git-cz",
     "build": "tsc --project ./",
     "start": "npm run build && NODE_ENV=production node ./dist/server.js",
-    "server": "NODE_ENV=development nodemon src/server.ts",
+    "server": "NODE_ENV=development nodemon --watch 'src/**/*' src/server.ts",
     "client": "npm run dev --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "pm2:start": "pm2 start ecosystem.config.js",
