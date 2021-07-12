@@ -16,6 +16,7 @@ dist
 
 # misc
 .DS_Store
+devconnector_html_theme
 
 # local env files
 .env
